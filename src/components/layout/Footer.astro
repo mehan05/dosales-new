@@ -1,0 +1,123 @@
+---
+interface Props {
+  settings: any;
+}
+
+const { settings } = Astro.props;
+
+const productLinks = [
+  "Lead Database",
+  "AI Prospecting",
+  "Data Enrichment",
+  "CRM Sync",
+  "Market Intelligence",
+];
+const companyLinks = ["About", "Careers", "Contact", "Partners"];
+
+const copyright = settings?.copyrightText || "© 2026 — Copyright. All Rights reserved";
+---
+
+<footer id="footer" class="w-full bg-white pt-10 md:pt-0 pb-10 md:pb-16 px-5 lg:px-[60px] mt-0 md:mt-[60px] flex justify-center">
+  <div class="w-full bg-[var(--color-bg-subtle)] rounded-[32px] p-8 lg:pt-[64px] lg:px-[44px] lg:pb-[32px] shadow-sm flex flex-col justify-between">
+    <div class="flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row lg:items-start lg:justify-between gap-6 md:gap-10 lg:gap-0">
+      
+      <!-- Brand & Info -->
+      <div class="flex flex-col gap-6 lg:max-w-[243px]">
+        <a href="/" class="flex items-center gap-2">
+          <img src="/logos/dosales-logo.svg" alt="DoSales" width="28" height="28" />
+          <span class="text-[22px] md:text-[22px] font-bold text-[var(--color-text-primary)] font-sans">DoSales</span>
+        </a>
+        <p class="font-normal text-[14px] leading-[22px] text-[var(--color-text-footer-sub)] max-w-[320px] font-satoshi tracking-[-0.24px]">
+          AI-powered sales intelligence for emerging markets. Verified B2B data across MENA and Southeast Asia.
+        </p>
+      </div>
+
+      <!-- Links: Product -->
+      <div class="flex flex-col gap-3 md:gap-8">
+        <h4 class="font-sans font-bold text-[20px] text-[var(--color-text-primary)]">Product</h4>
+        <ul class="flex flex-col gap-4">
+          {productLinks.map((link) => (
+            <li>
+              <a href="#" class="font-sans font-normal text-[16px] md:text-[20px] leading-[30px] text-[var(--color-text-gray)] hover:text-[var(--color-text-primary)] transition-colors">{link}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Links: Company -->
+      <div class="flex flex-col gap-3 md:gap-8">
+        <h4 class="font-sans font-bold text-[20px] text-[var(--color-text-primary)]">Company</h4>
+        <ul class="flex flex-col gap-4">
+          {companyLinks.map((link) => (
+            <li>
+              <a href="#" class="font-sans font-normal text-[16px] md:text-[20px] leading-[30px] text-[var(--color-text-gray)] hover:text-[var(--color-text-primary)] transition-colors">{link}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Call to Action & Social -->
+      <div class="flex flex-col gap-3 md:gap-6 lg:ml-[126px]">
+        <div class="bg-white rounded-[32px] p-3 flex items-center gap-4 shadow-sm w-full max-w-[350px]">
+          <div class="bg-black w-[64px] h-[64px] md:w-[90px] md:h-[90px] rounded-[24px] flex items-center justify-center shrink-0">
+            <img src="/logos/dosales-logo.svg" alt="Early Access" width="40" height="40" class="brightness-0 invert" />
+          </div>
+          <div class="flex flex-col font-bold text-[var(--color-text-primary)] font-satoshi text-[23.81px] leading-[32px] tracking-[-0.24px]">
+            <span>Apply for early</span>
+            <span>access</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-[14px] p-3 md:p-[12px_20px] flex items-center gap-4 md:gap-[16px] shadow-sm w-full max-w-[350px]">
+          <span class="font-sans font-medium text-[14px] md:text-[16px] text-[var(--color-black)] whitespace-nowrap">Follow us on</span>
+          <div class="flex items-center gap-4">
+            <a href="#" class="hover:opacity-70 transition-opacity" title="Follow DoSales on LinkedIn" target="_blank">
+              <img src="/icons/Linkedin.svg" alt="LinkedIn" width="20" height="20" />
+            </a>
+            <a href="#" class="hover:opacity-70 transition-opacity" title="Follow DoSales on Instagram" target="_blank">
+              <img src="/icons/instagram.svg" alt="Instagram" width="20" height="20" />
+            </a>
+            <a href="#" class="hover:opacity-70 transition-opacity" title="Follow DoSales on X" target="_blank">
+              <img src="/icons/x-icon.svg" alt="X" width="20" height="20" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-6 md:mt-10 pt-8 border-t border-[var(--color-border-footer)] -mx-8 lg:-mx-[44px] px-8 lg:px-[44px]">
+      <div class="flex flex-col lg:flex-row gap-8 lg:justify-between font-sans">
+        <p class="font-normal text-[14px] leading-[20px] text-[var(--color-text-gray)] opacity-70 font-satoshi tracking-[0%]">
+          {copyright}
+        </p>
+        <div class="grid grid-cols-2 lg:flex lg:items-center gap-x-8 gap-y-4 lg:gap-10">
+          <a href="/privacy" class="font-medium text-[14px] md:text-[16px] text-[var(--color-text-gray)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap">
+            Privacy policy
+          </a>
+          <a href="/terms" class="font-medium text-[14px] md:text-[16px] text-[var(--color-text-gray)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap">
+            Terms of service
+          </a>
+          <button id="open-cookie-settings" class="font-medium text-[14px] md:text-[16px] text-[var(--color-text-gray)] hover:text-[var(--color-text-primary)] transition-colors whitespace-nowrap bg-transparent border-none cursor-pointer p-0">
+            Cookie settings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setupCookieTrigger() {
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.id === 'open-cookie-settings' || target.closest('#open-cookie-settings')) {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('reopen-cookie-banner'));
+      }
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('astro:page-load', setupCookieTrigger);
+</script>

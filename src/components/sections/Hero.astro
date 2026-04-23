@@ -1,0 +1,194 @@
+---
+import { cn } from "../../lib/utils";
+import { urlFor } from "../../sanity/image";
+
+interface Props {
+  data: any;
+}
+
+const { data } = Astro.props;
+
+const heroTitle = data?.eyebrow || "Stop Chasing Leads!";
+const headlineTop = data?.headlineTop || "Turn your Ideal Customer Profile into a";
+const headlineAccent = data?.headlineAccent || "Automated Outreach";
+const heroSubtitle = data?.description || "DoSales automates lead discovery, outreach, and lead qualification with DoSales AI. Hand-over only sales-ready prospects and your sales team focuses on Revenue and Closing.";
+const ctaText = data?.ctaText || "REGISTER NOW";
+const badgeText = data?.badgeText || "Early Access Live - Limited Spots available";
+const dashboardImage = data?.dashboardImage ? urlFor(data.dashboardImage).url() : "/logos/table-view.svg";
+
+const sectionWrapper = "relative w-full overflow-hidden";
+const contentWrapper = cn(
+  "relative z-10",
+  "flex flex-col items-center justify-center text-center",
+  "pt-32 md:pt-[175px] px-4 sm:px-6"
+);
+const eyebrowText =
+  "text-[24px] md:text-[36px] font-bold text-[var(--color-brand)] leading-[100%] tracking-[0] text-center mb-6";
+const headingPrimary = cn(
+  "text-[28px] md:text-[39px] font-medium leading-[1.4] tracking-normal",
+  "text-[var(--color-text-primary)] max-w-4xl mx-auto mb-7 text-center font-sans font-satoshi"
+);
+const headingAccent = "font-bold";
+const subheadingText = cn(
+  "text-[14px] md:text-[16px] font-medium leading-[1.6] tracking-[0%] text-[var(--color-text-secondary)]",
+  "max-w-xl md:max-w-2xl mx-auto text-center mb-6"
+);
+const earlyAccessBadge = cn(
+  "inline-flex items-center justify-center gap-2 mb-[14px]",
+  "w-full max-w-[344px] h-[34px] rounded-[20px] border border-[var(--color-accent-green-border)] bg-[var(--color-accent-green-bg)]",
+  "px-3 py-[6px]"
+);
+const emailFormWrapper =
+  "flex flex-row items-center justify-between gap-2 w-full max-w-[403px] h-[51px] mx-auto mb-[14px] bg-white rounded-[10px] shadow-[0px_4px_4px_rgba(0,0,0,0.04)] p-[6px] pl-[14px] transition-all";
+const ctaButton = cn(
+  "bg-[var(--color-action)] hover:bg-[var(--color-brand-hover)] text-[var(--color-white)]",
+  "w-[141px] h-[39px] px-4 rounded-[6px] font-bold text-[14px] leading-none tracking-wide text-center whitespace-nowrap cursor-pointer",
+  "transition-all active:scale-95 border-none"
+);
+const secureText = "text-[16px] font-normal italic leading-[24px] text-center text-[var(--color-text-secondary)] mb-[26px]";
+---
+
+<section class={sectionWrapper}>
+  <div class="absolute inset-0 z-[3] pointer-events-none mask-[radial-gradient(circle_at_10%_20%,black_0%,transparent_70%),radial-gradient(circle_at_90%_15%,black_0%,transparent_60%),radial-gradient(circle_at_85%_85%,black_0%,transparent_70%)]">
+    <svg class="w-full h-[calc(100vh-12vh)]">
+      <defs>
+        <pattern id="hero-grid" x="0" y="0" width="76" height="76" patternUnits="userSpaceOnUse">
+          <rect x="5" y="5" width="66" height="66" rx="12" ry="12" fill="#FAFDFF33" fill-opacity="0.7" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hero-grid)" />
+    </svg>
+  </div>
+  
+  <div class="absolute z-[2] pointer-events-none rounded-full w-[70%] h-[70%] -top-[20%] -left-[25%] bg-[radial-gradient(circle_at_center,_#76B1C5_0%,_#B9E6FE_70%,_transparent_100%)] blur-[120px] opacity-60"></div>
+  <div class="absolute z-[2] pointer-events-none rounded-full w-[700px] h-[700px] top-[400px] -right-[200px] bg-blue-500 blur-[434px] opacity-60"></div>
+  <div class="absolute z-[2] pointer-events-none rounded-full w-[400px] h-[400px] top-[15%] right-[5%] bg-[radial-gradient(circle_at_center,_#CDDBFE_0%,_#B9E6FE_70%,_transparent_100%)] blur-[200px] opacity-60"></div>
+  <div class="absolute inset-x-0 top-0 bottom-0 z-[1] pointer-events-none bg-[radial-gradient(ellipse_at_50%_40%,_#FAFDFF_0%,_transparent_40%)] opacity-80"></div>
+
+  <div class={contentWrapper}>
+    <p class={eyebrowText}>{heroTitle}</p>
+    <h1 class={headingPrimary}>
+      {headlineTop}<br class="hidden md:block" />
+      with <span class={headingAccent}>{headlineAccent}</span>
+    </h1>
+    <p class={subheadingText}>{heroSubtitle}</p>
+    
+    <div class={earlyAccessBadge}>
+      <div class="relative w-1.5 h-1.5 shrink-0">
+        <span class="absolute inset-0 rounded-full bg-[var(--color-status-success)] animate-ping opacity-25"></span>
+        <span class="relative block w-1.5 h-1.5 rounded-full bg-[var(--color-status-success)] shadow-[0_0_5px_var(--color-status-success)]"></span>
+      </div>
+      <span class="text-[16px] font-medium leading-[100%] tracking-[0%] text-center whitespace-nowrap">
+        {badgeText}
+      </span>
+    </div>
+
+    <div class={emailFormWrapper}>
+      <input
+        type="email"
+        placeholder="example@email.com"
+        class="h-[39px] flex-1 rounded-lg bg-white text-[var(--color-text-slate)] text-[14px] font-normal placeholder:text-[var(--color-text-slate)] border-none shadow-none ring-0 outline-none focus:!ring-0 focus:!outline-none"
+      />
+      <button class={ctaButton} data-modal-trigger data-analytics-id="hero_register_top" data-analytics-location="hero_top">
+        {ctaText}
+      </button>
+    </div>
+    <p class={secureText}>Get Free Early Access</p>
+  </div>
+
+  <div id="dashboard-mockup-container" class="relative z-10 mx-auto max-w-[1120px] px-4 lg:px-0">
+    <div
+      id="dashboard-rotate-frame"
+      class="rounded-[40px] border-2 border-white p-4 bg-[linear-gradient(89.72deg,_#E2F2F8_0.4%,_#D2DCF9_99.93%)] origin-top transition-transform duration-100 ease-out"
+      style="transform: perspective(1200px) rotateX(25deg);"
+    >
+      <div class="rounded-[30px] border border-gray-200/80 shadow-2xl shadow-blue-100/40 overflow-hidden bg-white mx-auto w-full max-w-[1088px] md:h-auto lg:h-[680px]">
+        <div class="hidden md:block">
+          <img
+            src={dashboardImage}
+            alt="DoSales dashboard"
+            width="1120"
+            height="720"
+            loading="eager"
+            fetchpriority="high"
+            class="w-full h-auto object-contain scale-[1.02]"
+          />
+        </div>
+        <div class="block md:hidden">
+          <img
+            src={dashboardImage}
+            alt="DoSales dashboard mobile"
+            width="380"
+            height="480"
+            loading="eager"
+            fetchpriority="high"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center text-center mt-[88px] pb-[78px] md:pb-[181px] px-4">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-12 lg:gap-24 mb-[54px] w-full max-w-6xl">
+        <div class="flex flex-col items-center space-y-3">
+          <h2 class="font-sans font-bold text-[28px] md:text-[32px] text-[var(--color-brand)] uppercase leading-none">50 LEADS/MO</h2>
+          <p class="font-sans font-medium text-[14px] md:text-[16px] text-[var(--color-text-secondary)] uppercase leading-none">FREE FOREVER</p>
+        </div>
+        <div class="flex flex-col items-center space-y-3">
+          <h2 class="font-sans font-bold text-[28px] md:text-[32px] text-[var(--color-brand)] uppercase leading-none">2 MIN</h2>
+          <p class="font-sans font-medium text-[14px] md:text-[16px] text-[var(--color-text-secondary)] uppercase leading-none">SETUP</p>
+        </div>
+        <div class="flex flex-col items-center space-y-3">
+          <h2 class="font-sans font-bold text-[28px] md:text-[32px] text-[var(--color-brand)] uppercase leading-none">NO CARD</h2>
+          <p class="font-sans font-medium text-[14px] md:text-[16px] text-[var(--color-text-secondary)] uppercase leading-none">REQUIRED</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center space-y-4">
+        <button class="w-[280px] md:w-[136px] h-[52px] bg-[var(--color-text-primary)] text-white rounded-[10px] font-bold text-[14px] uppercase tracking-wider flex items-center justify-center shadow-xl active:scale-95 transition-all cursor-pointer border-none" data-modal-trigger data-analytics-id="hero_register_bottom" data-analytics-location="hero_bottom">
+          REGISTER NOW
+        </button>
+        <div class="flex flex-row items-center justify-center gap-[10px] pt-2">
+          <p class="font-sans font-normal text-[16px] text-[var(--color-text-secondary)] leading-none">
+            Loved by 132+ existing users
+          </p>
+          <div class="flex gap-[4px] items-center">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path 
+                  d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
+                  fill="url(#star_grad)" 
+                  stroke="#FFB627" 
+                  stroke-width="1.2" 
+                  stroke-linejoin="round" 
+                />
+              </svg>
+            ))}
+            <svg width="0" height="0" class="absolute">
+              <defs>
+                <linearGradient id="star_grad" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFF282" />
+                  <stop offset="1" stop-color="#FFB627" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const frame = document.getElementById('dashboard-rotate-frame');
+  const container = document.getElementById('dashboard-mockup-container');
+  
+  if (frame && container) {
+    window.addEventListener('scroll', () => {
+      const rect = container.getBoundingClientRect();
+      const offset = Math.max(0, window.innerHeight - rect.top);
+      const rotation = Math.max(0, 25 - offset * 0.05);
+      frame.style.transform = `perspective(1200px) rotateX(${rotation}deg)`;
+    }, { passive: true });
+  }
+</script>

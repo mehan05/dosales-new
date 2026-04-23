@@ -1,0 +1,125 @@
+---
+// src/components/ui/CalendlyManager.astro
+// This component handles the Calendly popup integration, lazy loading, and event tracking.
+---
+
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
+<script is:inline>
+  /**
+   * Calendly Event Listener for tracking and redirects
+   */
+  function isCalendlyEvent(e) {
+    return e.data.event && e.data.event.indexOf('calendly') === 0;
+  }
+
+  window.addEventListener('message', function(e) {
+    if (isCalendlyEvent(e)) {
+      // Event: invitee_scheduled or event_scheduled
+      if (e.data.event === 'calendly.event_scheduled') {
+        const payload = e.data.payload;
+        console.log('Calendly Demo Scheduled Successfuly');
+        
+        // Use central analytics utility
+        import('../../lib/analytics').then(({ trackEvent }) => {
+          trackEvent('demo_scheduled', {
+            calendly_event_type: payload.event_type.name,
+            calendly_invitee_email: payload.invitee.email,
+            calendly_invitee_uuid: payload.invitee.uuid
+          });
+        });
+
+        // 2. Optional: Capture lead data via internal API/Webhook
+        // Replace with your actual endpoint
+        fetch('/api/leads/demo-scheduled', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: payload.invitee.email,
+            event: payload.event_type.name,
+            timestamp: new Date().toISOString()
+          })
+        }).catch(err => console.warn('Lead capture failed:', err));
+
+        // 3. Redirect to custom Thank You page
+        setTimeout(() => {
+          window.location.href = '/thank-you';
+        }, 1500);
+      }
+    }
+  });
+
+  /**
+   * Lazy load Calendly Library
+   */
+  let calendlyScriptLoaded = false;
+  function loadCalendlyLib() {
+    if (calendlyScriptLoaded) return Promise.resolve();
+    
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.type = 'text/javascript';
+      script.onload = () => {
+        calendlyScriptLoaded = true;
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  /**
+   * Global trigger handler
+   */
+  document.addEventListener('click', async (e) => {
+    const trigger = e.target.closest('[data-calendly-trigger]');
+    if (trigger) {
+      e.preventDefault();
+      
+      // Visual feedback
+      const originalText = trigger.innerText;
+      const isButton = trigger.tagName === 'BUTTON';
+      
+      if (isButton) {
+        trigger.setAttribute('data-original-text', originalText);
+        trigger.innerText = 'Loading...';
+        trigger.style.opacity = '0.7';
+        trigger.style.cursor = 'wait';
+      }
+
+      try {
+        await loadCalendlyLib();
+        
+        // Use showPopupWidget for standard button triggers
+        // Official Calendly link for Dhanalakshmi
+        const calendlyUrl = trigger.getAttribute('data-calendly-url') || 'https://calendly.com/dhanalakshmi-s-calibraint/30min';
+        
+        // @ts-ignore
+        Calendly.showPopupWidget(calendlyUrl);
+      } catch (err) {
+        console.error('Failed to load Calendly:', err);
+      } finally {
+        if (isButton) {
+          trigger.innerText = trigger.getAttribute('data-original-text') || originalText;
+          trigger.style.opacity = '1';
+          trigger.style.cursor = 'pointer';
+        }
+      }
+    }
+  });
+
+  // Pre-fetch on hover for zero-latency feel
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest('[data-calendly-trigger]')) {
+      loadCalendlyLib();
+    }
+  }, { passive: true });
+</script>
+
+<style is:global>
+  /* Ensure Calendly popup is above everything but under our custom overlays if needed */
+  .calendly-overlay {
+    z-index: 9999 !important;
+  }
+</style>

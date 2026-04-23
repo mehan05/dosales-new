@@ -1,0 +1,29 @@
+---
+import '../styles/globals.css';
+import Page404 from '../components/404/Page404';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>404 - Something's Missing | DoSales</title>
+		<meta name="description" content="Oops! The page you are looking for doesn't exist. Return home or contact DoSales." />
+		<link rel="icon" type="image/svg+xml" href="/logos/dosales-logo.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+		<style>
+			html, body {
+				width: 100%; height: 100%;
+				overflow: hidden;
+				background: var(--blue-deep);
+			}
+		</style>
+	</head>
+	<body>
+		<Page404 client:load />
+	</body>
+</html>
+

@@ -1,0 +1,28 @@
+{
+  "hero": {
+    "eyebrow": "Stop Chasing Leads!",
+    "headlineTop": "Turn your Ideal Customer Profile into a",
+    "headlineAccent": "Booked Meeting",
+    "description": "DoSales automates lead discovery, outreach, and lead qualification with DoSales AI. Hand-over only sales-ready prospects and your sales team focuses on Revenue and Closing.",
+    "ctaText": "REGISTER NOW",
+    "badgeText": "Early Access Live - Limited Spots available"
+  },
+  "whyDoSales": {
+    "eyebrow": "Why DoSales",
+    "heading": "Built exclusively for your market",
+    "features": [
+      { "title": "Regional Dominance" },
+      { "title": "Vertical Intelligence" },
+      { "title": "AI Autonomy" }
+    ]
+  },
+  "demo": {
+    "headingBadge": "AI Outbound Agent",
+    "heading": "From Ideal\nProspects to\nBooked Meetings\n- Automatically",
+    "subheading": "From ICP targeting to follow-ups, DoSales handles the entire outbound process. So your team spends time closing, not chasing."
+  },
+  "platform": {
+    "heading": "An Automated Funnel that turns your ICP to Booked Meetings in 3 steps",
+    "subheading": "Define your ICP and DoSales AI handles discovery, outreach, and qualification automatically."
+  }
+}

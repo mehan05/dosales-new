@@ -1,0 +1,162 @@
+---
+import '../styles/globals.css';
+import RegistrationModal from '../components/RegistrationModal.astro';
+import CalendlyManager from '../components/ui/CalendlyManager.astro';
+import CookieConsent from '../components/ui/CookieConsent.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+	title?: string;
+	description?: string;
+	settings?: any;
+}
+
+const { 
+	title = "DoSales — AI-Powered Sales Intelligence for Emerging Markets", 
+	description = "DoSales automates lead discovery, outreach, and lead qualification with DoSales AI.",
+	settings = {}
+} = Astro.props;
+
+const gtmId = import.meta.env.PUBLIC_GTM_ID || 'GTM-XXXXXXX';
+
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	"name": "DoSales",
+	"url": "https://dosales.ai",
+	"logo": "https://dosales.ai/logos/dosales-logo.svg",
+	"sameAs": [
+		"https://twitter.com/dosales_ai",
+		"https://www.linkedin.com/company/dosales-ai"
+	],
+	"description": "AI-Powered Sales Intelligence for Emerging Markets"
+};
+
+const breadcrumbSchema = Astro.url.pathname !== '/' ? {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [
+		{
+			"@type": "ListItem",
+			"position": 1,
+			"name": "Home",
+			"item": "https://dosales.ai"
+		},
+		{
+			"@type": "ListItem",
+			"position": 2,
+			"name": title.split(' | ')[0],
+			"item": Astro.url.toString()
+		}
+	]
+} : null;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/logos/dosales-logo.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://cdn.sanity.io" />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+		
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:url" content={Astro.url} />
+		
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
+		<!-- Consent Mode v2 -->
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('consent', 'default', {
+				'analytics_storage': 'denied',
+				'ad_storage': 'denied',
+				'ad_user_data': 'denied',
+				'ad_personalization': 'denied',
+				'wait_for_update': 500
+			});
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script is:inline define:vars={{ gtmId }}>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer',gtmId);
+		</script>
+		<!-- End Google Tag Manager -->
+
+		<!-- Structured Data -->
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+		
+		<!-- Breadcrumbs Structured Data -->
+		{breadcrumbSchema && (
+			<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+		)}
+		<ClientRouter />
+	</head>
+	<body class="min-h-screen bg-background text-foreground antialiased font-sans">
+		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[300] focus:px-6 focus:py-3 focus:bg-white focus:text-blue-600 focus:rounded-lg focus:shadow-xl focus:font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+			Skip to content
+		</a>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript>
+			<iframe src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+			height="0" width="0" style="display:none;visibility:hidden"></iframe>
+		</noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		
+		<div class="min-h-screen flex flex-col">
+			<Navbar settings={settings} transition:persist />
+			<slot />
+			<Footer settings={settings} transition:persist />
+		</div>
+
+		<RegistrationModal transition:persist />
+		<CalendlyManager transition:persist />
+		<CookieConsent transition:persist />
+
+		<!-- Global Analytics Click Tracker -->
+		<script>
+			import { analytics } from '../lib/analytics';
+
+			document.addEventListener('click', (e) => {
+				const target = e.target as HTMLElement;
+				const trackable = target.closest('[data-analytics-id], [data-calendly-trigger], [data-modal-trigger]');
+				
+				if (trackable) {
+					const id = trackable.getAttribute('data-analytics-id') || trackable.id || 'anonymous_cta';
+					const location = trackable.getAttribute('data-analytics-location') || 'unknown';
+					const text = (trackable as HTMLElement).innerText || 'no_text';
+
+					// Special case for Calendly
+					if (trackable.hasAttribute('data-calendly-trigger')) {
+						analytics.trackCTA(id, location || 'calendly_button', text);
+					} else if (!trackable.hasAttribute('data-modal-trigger')) {
+						// data-modal-trigger is handled inside RegistrationModal.astro to avoid double tracking
+						analytics.trackCTA(id, location, text);
+					}
+				}
+			}, { passive: true });
+		</script>
+	</body>
+</html>

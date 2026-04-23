@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client } from '../sanity/astro-client';
+import backupContent from '../lib/content.backup.json';
+
+async function getGlobalData() {
+  try {
+    const query = `*[_type == "settings"][0]`;
+    return await client.fetch(query);
+  } catch (error: any) {
+    if (error?.statusCode === 500) throw error;
+    return {};
+  }
+}
+
+const remoteSettings = await getGlobalData();
+const settings = remoteSettings || {};
+---
+
+<Layout title={`Privacy Policy | ${settings.siteTitle || 'DoSales'}`} description="Read about how DoSales handles and protects your data." settings={settings}>
+    <main id="main-content" class="flex-1 relative pt-32 pb-20 px-4 md:px-[60px] overflow-hidden">
+      <!-- Background Grid & Glow (Reused from Hero) -->
+      <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 z-[3] mask-[radial-gradient(circle_at_50%_40%,black_0%,transparent_70%)]">
+          <svg class="w-full h-full opacity-30">
+            <defs>
+              <pattern id="privacy-grid" x="0" y="0" width="76" height="76" patternUnits="userSpaceOnUse">
+                <rect x="5" y="5" width="66" height="66" rx="12" ry="12" fill="#FAFDFF33" fill-opacity="0.7" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#privacy-grid)" />
+          </svg>
+        </div>
+        <div class="absolute z-[2] rounded-full w-[800px] h-[800px] -top-[20%] -left-[10%] bg-[radial-gradient(circle_at_center,_#76B1C5_0%,_#B9E6FE_70%,_transparent_100%)] blur-[150px] opacity-50"></div>
+        <div class="absolute z-[1] rounded-full w-[800px] h-[800px] top-[10%] -right-[15%] bg-[radial-gradient(circle_at_center,_#9b87f5_0%,_#7c3aed_70%,_transparent_100%)] blur-[250px] opacity-40"></div>
+        <div class="absolute z-[0] rounded-full w-full h-[600px] -top-[10%] left-0 bg-[radial-gradient(ellipse_at_center,_#CDDBFE_0%,_#F0F9FF_60%,_transparent_100%)] blur-[180px] opacity-30"></div>
+      </div>
+
+      <div class="max-w-[1360px] mx-auto relative z-10 w-full">
+        <div class="backdrop-blur-2xl bg-white/60 rounded-[20px] md:rounded-[32px] border-2 border-white shadow-[0px_12px_44px_rgba(0,0,0,0.06)] px-4 pb-4 pt-10 md:px-28 md:py-24">
+          <h1 class="text-[42px] md:text-[52px] font-sans font-bold text-[var(--color-text-primary)] mb-10 tracking-tight leading-none font-satoshi">
+            Privacy Policy
+          </h1>
+          
+          <div class="prose prose-slate max-w-none font-satoshi flex flex-col gap-8">
+            <section>
+              <p class="text-[18px] leading-[1.6] text-[var(--color-text-secondary)] mb-6">
+                This Privacy Policy abides under the privacy and data protection principles of DoSales. The policies are committed to the collection, usage, processing & rendering of personal information and personal data acquired in connection with the use of DoSales's website. We obtain user data to serve visitor needs and respond to information requests expeditiously.
+              </p>
+            </section>
+
+            <section>
+              <h2 class="text-[24px] font-bold text-[var(--color-text-primary)] mb-4">Information Furnished</h2>
+              <p class="text-[16px] text-[var(--color-text-secondary)] mb-4 leading-relaxed">
+                The collected data are grouped under Identity, Contact, Behaviour & Sharing Info.
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="bg-white p-6 rounded-2xl border border-white shadow-sm">
+                  <h3 class="font-bold text-[18px] mb-2 text-[var(--color-text-primary)]">Identity-Info</h3>
+                  <p class="text-[14px] text-[var(--color-text-secondary)]">Includes First name, Last name, Username</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-white shadow-sm">
+                  <h3 class="font-bold text-[18px] mb-2 text-[var(--color-text-primary)]">Contact-Info</h3>
+                  <p class="text-[14px] text-[var(--color-text-secondary)]">Includes Mail Address, Mobile Numbers, Company Name, Job Title</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-white shadow-sm">
+                  <h3 class="font-bold text-[18px] mb-2 text-[var(--color-text-primary)]">Behaviour-Info</h3>
+                  <p class="text-[14px] text-[var(--color-text-secondary)]">Includes usage and flow: pages visited, features explored, and session duration</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-white shadow-sm">
+                  <h3 class="font-bold text-[18px] mb-2 text-[var(--color-text-primary)]">Sharing-Info</h3>
+                  <p class="text-[14px] text-[var(--color-text-secondary)]">Includes Comments, Messages, or text submitted through forms</p>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <h2 class="text-[24px] font-bold text-[var(--color-text-primary)] mb-4">Mode of Collection</h2>
+              <div class="space-y-6 text-[16px] text-[var(--color-text-secondary)] leading-relaxed">
+                <div>
+                  <h3 class="font-bold text-[18px] text-[var(--color-text-primary)] mb-2">By Direct Submission</h3>
+                  <p>User response via filling out the early access registration form, contact form, or demo request form, letting us know your name, mail address, and company details. (Acknowledged by User)</p>
+                </div>
+                <div>
+                  <h3 class="font-bold text-[18px] text-[var(--color-text-primary)] mb-2">By Referral Platforms</h3>
+                  <p>Rounding out user details on our promotional referral sites, subjected to the respective site's acclaimed policies. (Acknowledged by User)</p>
+                </div>
+                <div>
+                  <h3 class="font-bold text-[18px] text-[var(--color-text-primary)] mb-2">Technical Source</h3>
+                  <p class="mb-2">We collect behavioral flow through:</p>
+                  <ul class="list-disc pl-5 space-y-1">
+                    <li>Analytics providers</li>
+                    <li>Advertising networks</li>
+                    <li>Search Consoles / Webmaster tools</li>
+                    <li>Heat Maps & Session Recording tools</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="bg-[var(--color-bg-subtle)] p-8 rounded-[24px] border-2 border-white">
+              <h2 class="text-[24px] font-bold text-[var(--color-text-primary)] mb-4">Data Security</h2>
+              <p class="text-[16px] text-[var(--color-text-secondary)] leading-relaxed">
+                We have put in place adequate security provisions to prevent user personal data from being accidentally lost, used, or accessed in an unauthorised way, altered, or disclosed. DoSales maintains security by ensuring that the furnished information is only distributed within the DoSales team, who are responsible for responding to your requirements either directly or indirectly. There will not be any personal data breach with non-affiliated parties or companies. We take preventive measures to protect your information at all times.
+              </p>
+            </section>
+
+            <section>
+              <h2 class="text-[24px] font-bold text-[var(--color-text-primary)] mb-4">Data Usage & Disclosure</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-[16px] text-[var(--color-text-secondary)] leading-relaxed">
+                <div>
+                  <h3 class="font-bold text-[18px] text-[var(--color-text-primary)] mb-2">Usage</h3>
+                  <p>Solely for improving experience, responding to inquiries, sending updates, and qualifying leads. We do not sell your personal data.</p>
+                </div>
+                <div>
+                  <h3 class="font-bold text-[18px] text-[var(--color-text-primary)] mb-2">Disclosure</h3>
+                  <p>Only on legal demand from judiciary or regarding illegal activities/fraud as required by law.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="border-t border-gray-200 pt-8 mt-4 grid grid-cols-1 md:grid-cols-2 gap-10">
+               <div>
+                  <h2 class="text-[20px] font-bold text-[var(--color-text-primary)] mb-2">Response Delivery</h2>
+                  <p class="text-[15px] text-[var(--color-text-secondary)]">All legitimate requests will be responded to within 2–3 business days.</p>
+               </div>
+               <div>
+                  <h2 class="text-[20px] font-bold text-[var(--color-text-primary)] mb-2">Grievance Reporting</h2>
+                  <p class="text-[15px] text-[var(--color-text-secondary)]">Complaints should be sent to our designated privacy contact via the email on our Contact page.</p>
+               </div>
+            </section>
+
+            <p class="text-center italic text-[14px] text-[var(--color-text-secondary)] mt-10">
+              Update: Any change to this policy will be updated here. We encourage you to review this page periodically.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+</Layout>

@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import WhyDoSales from '../components/sections/WhyDoSales.astro';
+import EarlyAccess from '../components/sections/EarlyAccess.astro';
+
+// React Islands
+import DataSourcesSection from '../components/sections/DataSourcesSection.tsx';
+import AIAgentSection from '../components/sections/AIAgentSection.tsx';
+import PlatformSection from '../components/sections/PlatformSection.tsx';
+
+import { client } from '../sanity/astro-client';
+import backupContent from '../lib/content.backup.json';
+
+async function getLandingPageData(runtime: any) {
+  const KV = runtime?.env?.SNAPSHOTS;
+  const CACHE_KEY = "homepage_data_v1";
+
+  try {
+    const query = `{
+      "page": *[_type == "page" && title == "Home"][0] {
+        hero->,
+        whyDoSales->,
+        radar,
+        demo->,
+        platform->,
+        footerCta
+      },
+      "fallbackHero": *[_type == "hero"][0],
+      "fallbackWhy": *[_type == "whyDoSales"][0],
+      "fallbackDemo": *[_type == "demo"][0],
+      "fallbackPlatform": *[_type == "platform"][0],
+      "settings": *[_type == "settings"][0],
+      "radarData": *[_type == "radar"][0],
+      "testimonials": *[_type == "testimonial"]
+    }`;
+    const remoteData = await client.fetch(query);
+    
+    if (!remoteData || !remoteData.page) throw new Error("No data found");
+
+    // Success: Update the KV snapshot (background)
+    if (KV) {
+      await KV.put(CACHE_KEY, JSON.stringify(remoteData));
+    }
+
+    return remoteData;
+  } catch (error: any) {
+    // If it's a critical server error (500), propagate it to trigger the 500 page
+    if (error?.statusCode === 500) {
+      throw error;
+    }
+
+    console.warn("Sanity fetch failed - checking Cloudflare KV fallback:", error);
+    
+    // Fallback 1: Cloudflare KV Snapshot
+    if (KV) {
+      const snapshot = await KV.get(CACHE_KEY, { type: 'json' });
+      if (snapshot) {
+        console.info("Recovered data from Cloudflare KV snapshot");
+        return snapshot;
+      }
+    }
+
+    // Fallback 2: Hardcoded Local Backup
+    console.warn("KV fallback unavailable - using local hardcoded backup");
+    return {
+      page: {
+        hero: backupContent.hero,
+        whyDoSales: backupContent.whyDoSales,
+        demo: backupContent.demo,
+        platform: backupContent.platform,
+      },
+      testimonials: []
+    };
+  }
+}
+
+const data = await getLandingPageData(Astro.locals.runtime);
+
+const heroData = data?.page?.hero || data?.fallbackHero || backupContent.hero;
+const whyData = data?.page?.whyDoSales || data?.fallbackWhy || backupContent.whyDoSales;
+const radarData = data?.page?.radar;
+const demoData = data?.page?.demo || data?.fallbackDemo || backupContent.demo;
+const platformData = data?.page?.platform || data?.fallbackPlatform || backupContent.platform;
+const settings = data?.settings || {};
+const finalRadarData = data?.radarData || { title: "Data Sources", icons: [] };
+const footerCta = data?.page?.footerCta;
+const testimonials = data?.testimonials || [];
+---
+
+<Layout title={settings.siteTitle} description={settings.siteDescription} settings={settings}>
+  <main id="main-content" class="flex-1">
+    <Hero data={heroData} />
+    <WhyDoSales data={whyData} />
+    
+    <!-- Interactive Islands -->
+    <DataSourcesSection client:visible data={finalRadarData} />
+    <AIAgentSection client:visible data={demoData} testimonials={testimonials} />
+    <PlatformSection client:visible data={platformData} />
+    
+    <EarlyAccess data={footerCta} />
+  </main>
+</Layout>

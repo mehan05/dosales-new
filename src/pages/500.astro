@@ -1,0 +1,28 @@
+---
+import '../styles/globals.css';
+import Page500 from '../components/500/Page500';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>500 - Server Error | DoSales</title>
+		<meta name="description" content="Oops! Something went wrong on our end. We're working on fixing it." />
+		<link rel="icon" type="image/svg+xml" href="/logos/dosales-logo.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+		<style>
+			html, body {
+				width: 100%; height: 100%;
+				overflow: hidden;
+				background: var(--blue-deep);
+			}
+		</style>
+	</head>
+	<body>
+		<Page500 client:load />
+	</body>
+</html>
