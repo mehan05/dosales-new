@@ -1,5 +1,5 @@
 {
-  "name": "dosales-landing",
+  "name": "dosales-new",
   "compatibility_date": "2026-04-23",
   "compatibility_flags": ["nodejs_compat"],
   "main": "./dist/_worker.js/index.js",
